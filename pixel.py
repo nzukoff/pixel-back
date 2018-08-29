@@ -13,8 +13,8 @@ import glob
 app = Flask(__name__)
 CORS(app)
 
-pix_values=None
-pix_labels=None
+pix_values=[]
+pix_labels=[]
 pix_list=[]
 color_options=[]
 updated_data=[]
@@ -68,7 +68,7 @@ def cluster_colors(n_clusters):
     color_options = kmeans.cluster_centers_.astype(int).tolist()
     return jsonify(color_options=color_options)
 
-@app.route('/choose/<choice>')
+@app.route('/choose/<choice>/')
 # @cross_origin(allow_headers=['Content-Type'])
 def choose_color(choice):
     global pix_labels
