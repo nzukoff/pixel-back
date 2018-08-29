@@ -15,7 +15,7 @@ CORS(app)
 
 pix_values=None
 pix_labels=None
-pix_list=None
+pix_list=[]
 color_options=[]
 updated_data=[]
 updated_labels = []
