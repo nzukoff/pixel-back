@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw
+from PIL import Image
 from sklearn.cluster import KMeans, MiniBatchKMeans
 from collections import Counter
 import numpy as np
