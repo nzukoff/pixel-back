@@ -116,6 +116,8 @@ def reset_values():
     global updated_data
     global color_options
     global updated_data
+    global pix_values
+    pix_values=[]
     pix_labels=[]
     pix_list=[]
     updated_data=[]
