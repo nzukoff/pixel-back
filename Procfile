@@ -1,1 +1,1 @@
-web: gunicorn -w 1 -k gthread --thread=2 pixel:app
+web: gunicorn --workers=1 pixel:app
