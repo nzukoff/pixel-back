@@ -5,124 +5,114 @@ from collections import Counter
 import numpy as np
 import random
 from random import randint
-from flask import Flask, send_file
+from flask import Flask, session, jsonify, request
 from flask_cors import CORS, cross_origin
-from flask import jsonify
-from flask import request
 import glob
 import base64
+import zlib
 
 app = Flask(__name__)
 CORS(app)
 
-pix_values=[]
-pix_labels=[]
-color_options=[]
-updated_data=[]
-updated_labels = []
-image_size = ()
-
 # images = ['tile3_small.jpg','tulips_small.jpg','legos2_small.jpg']
-images = glob.glob('./small-images/*.jpg')
-images_copy = []
+# images = glob.glob('./small-images/*.jpg')
+# images_copy = []
 
-@app.route('/load/<load_type>/')
+@app.route('/load/<load_type>')
 def load_image(load_type):
-    reset_values()
+    # global images
+    # global images_copy
 
-    global images
-    global images_copy
-    global image_size
-    global pix_values
+    # path = ''
 
-    if load_type == 'new':
-        images_copy = images.copy()
-        path = random.choice(images)
-        images_copy.remove(path)
+    # if load_type == 'new':
+    #     images_copy = images.copy()
+    #     path = random.choice(images)
+    #     images_copy.remove(path)
 
-    elif load_type == 'next':
-        path = random.choice(images_copy)
-        images_copy.remove(path)
+    # elif load_type == 'next':
+    #     path = random.choice(images_copy)
+    #     images_copy.remove(path)
 
-        if len(images_copy) == 0:
-            images_copy = images.copy()
-            images_copy.remove(path)
+    #     if len(images_copy) == 0:
+    #         images_copy = images.copy()
+    #         images_copy.remove(path)
 
+    images = glob.glob('./small-images/*.jpg')
+    path = random.choice(images)
+    img = Image.open(path) 
+    image_size = img.size
+    string_png = convertImagetoString(img)
+    
+    return jsonify(image_size=image_size, png_data=string_png, title=path[15:-4])
+
+@app.route('/options/<n_clusters>')
+def cluster_colors(n_clusters):
+    path = './small-images/' + request.args['title'] + '.jpg'
     img = Image.open(path) 
     pix_values = np.array(list(img.getdata()))
-    
-    image_size = img.size
 
-    string_png = convertImagetoString(img)
-
-    return jsonify(image_size=image_size, png_data=string_png)
-
-@app.route('/options/<n_clusters>/')
-def cluster_colors(n_clusters):
-    global pix_values
-    global pix_labels
-    global color_options
     kmeans = MiniBatchKMeans(int(n_clusters))
     pix_labels = kmeans.fit_predict(pix_values)
     color_options = kmeans.cluster_centers_.astype(int).tolist()
-    return jsonify(color_options=color_options)
 
-@app.route('/choose/<choice>/')
+    pix_label_bytes = bytearray(len(pix_labels)//2)
+    byte = 0
+    for idx, pix in enumerate(pix_labels):
+        if idx % 2 == 0:
+            byte = pix << 4
+        else:
+            byte = byte | (pix & 0x0f)
+            pix_label_bytes[idx//2] = byte
+
+    comp_labels = zlib.compress(pix_label_bytes)
+    str_labels = base64.b64encode(comp_labels).decode('utf-8')
+
+    return jsonify(color_options=color_options, labels=str_labels)
+
+@app.route('/choose/<choice>', methods=['POST'])
 def choose_color(choice):
-    global pix_labels
-    global pix_values
-    global updated_data
-    global color_options
-    global updated_labels
-    global image_size
-
     choice = int(choice)
 
-    pix_labels_spread = np.repeat(np.array(pix_labels), 3)
-    chosen_indices = np.where(pix_labels_spread == choice)
-    np_pix_values = np.array(pix_values).flatten()
+    path = './small-images/' + request.args['title'] + '.jpg'
 
-    if len(updated_data) == 0:
-        data = np.array([255 for d in range(len(np_pix_values))])
-        data[chosen_indices] = np_pix_values[chosen_indices]
-        updated_data = data
-        labels_count = update_labels(pix_labels, choice)
-    else:
-        updated_data[chosen_indices] = np_pix_values[chosen_indices]
-        labels_count = update_labels(updated_labels, choice)
+    img = Image.open(path) 
+    image_size = img.size
+    pix_values = np.array(list(img.getdata()))
 
-    color_options = [[] if i == choice else color for i, color in enumerate(color_options)]
+    str_labels = request.get_json()['labels']
+    comp_labels = base64.b64decode(str_labels)
+    uncompressed_labels = zlib.decompress(comp_labels)
+    numpy_labels = np.empty((len(uncompressed_labels)*2,), dtype='uint8')
+    for idx, value in enumerate(uncompressed_labels):
+        numpy_labels[idx*2] = value >> 4
+        numpy_labels[idx*2+1] = value & 0x0f
 
-    chosen_place = None
-    for idx, (key, count) in enumerate(labels_count):
-        if key == choice:
-            chosen_place = idx
+    choices = request.get_json()['choices']
+    choices.append(choice)
 
-    del labels_count[chosen_place]
+    data = np.array([[255, 255, 255] for d in range(len(pix_values))])
+    indices = []
+    for c in choices:
+        found = np.where(numpy_labels == c)[0]
+        for i in found:
+            indices.append(i)
+    data[indices] = pix_values[indices]
 
-    img = Image.frombytes("RGB", image_size, bytes(updated_data.astype('uint8')))
+    img = Image.frombytes("RGB", image_size, bytes(data.astype('uint8')))
 
     string_png = convertImagetoString(img)
 
-    return jsonify(png_data=string_png, color_options=color_options, chosen_place=chosen_place+1)
+    color_options = request.get_json()['colors']
+    color_options = [[] if i == choice else color for i, color in enumerate(color_options)]
 
-def update_labels(label_list, choice):
-    global updated_labels
-    labels_count = Counter(label_list).most_common()
-    updated_labels = [label for label in label_list if label != choice]
-    return labels_count
+    labels_count = Counter(numpy_labels).most_common()
+    chosen_place = None
+    for idx, (key, count) in enumerate(labels_count):
+        if key == choices[-1]:
+            chosen_place = idx
 
-def reset_values():
-    global pix_labels
-    global updated_data
-    global color_options
-    global updated_data
-    global pix_values
-    pix_values=[]
-    pix_labels=[]
-    updated_data=[]
-    color_options=[]
-    updated_data=[]
+    return jsonify(png_data=string_png, color_options=color_options, chosen_place=chosen_place+1, choices=choices)
 
 def convertImagetoString(image):
     byte_io = BytesIO()
