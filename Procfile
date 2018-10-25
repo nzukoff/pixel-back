@@ -1,1 +1,1 @@
-web: gunicorn pixel:app
+web: gunicorn --workers=1 pixel:app
