@@ -43,7 +43,7 @@ def load_image(load_type):
     img = Image.open(path) 
     image_size = img.size
     string_png = convertImagetoString(img)
-    
+
     return jsonify(image_size=image_size, png_data=string_png, title=path[15:-4])
 
 @app.route('/options/<n_clusters>')
@@ -106,10 +106,11 @@ def choose_color(choice):
     color_options = request.get_json()['colors']
     color_options = [[] if i == choice else color for i, color in enumerate(color_options)]
 
-    labels_count = Counter(numpy_labels).most_common()
+    updated_labels = numpy_labels[~np.in1d(numpy_labels, choices[:-1])]
+    labels_count = Counter(updated_labels).most_common()
     chosen_place = None
     for idx, (key, count) in enumerate(labels_count):
-        if key == choices[-1]:
+        if key == choice:
             chosen_place = idx
 
     return jsonify(png_data=string_png, color_options=color_options, chosen_place=chosen_place+1, choices=choices)
