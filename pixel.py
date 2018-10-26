@@ -91,9 +91,6 @@ def choose_color(choice):
 
     string_png = convertImagetoString(img)
 
-    color_options = request.get_json()['colors']
-    color_options = [[] if i == choice else color for i, color in enumerate(color_options)]
-
     updated_labels = numpy_labels[~np.in1d(numpy_labels, choices[:-1])]
     labels_count = Counter(updated_labels).most_common()
     chosen_place = None
@@ -101,7 +98,7 @@ def choose_color(choice):
         if key == choice:
             chosen_place = idx
 
-    return jsonify(png_data=string_png, color_options=color_options, chosen_place=chosen_place+1, choices=choices)
+    return jsonify(png_data=string_png, chosen_place=chosen_place+1, choices=choices)
 
 def convertImagetoString(image):
     byte_io = BytesIO()
