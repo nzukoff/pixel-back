@@ -1,12 +1,11 @@
 from PIL import Image, ImageDraw
 from io import BytesIO
-from sklearn.cluster import KMeans, MiniBatchKMeans
+from sklearn.cluster import MiniBatchKMeans
 from collections import Counter
 import numpy as np
 import random
-from random import randint
 from flask import Flask, session, jsonify, request
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 import glob
 import base64
 import zlib
@@ -14,37 +13,26 @@ import zlib
 app = Flask(__name__)
 CORS(app)
 
-# images = ['tile3_small.jpg','tulips_small.jpg','legos2_small.jpg']
-# images = glob.glob('./small-images/*.jpg')
-# images_copy = []
-
-@app.route('/load/<load_type>')
+@app.route('/load/<load_type>', methods=['POST'])
 def load_image(load_type):
-    # global images
-    # global images_copy
+    titles = request.get_json()['titles']
+    title_paths = np.array(['./small-images/' + t + '.jpg' for t in titles])
+    images = np.array(glob.glob('./small-images/*.jpg'))
 
-    # path = ''
+    if (len(titles) != len(images)):
+        unplayed_images = images[~np.in1d(images, title_paths)]
+    else:
+        unplayed_images = images
+        titles = []
 
-    # if load_type == 'new':
-    #     images_copy = images.copy()
-    #     path = random.choice(images)
-    #     images_copy.remove(path)
-
-    # elif load_type == 'next':
-    #     path = random.choice(images_copy)
-    #     images_copy.remove(path)
-
-    #     if len(images_copy) == 0:
-    #         images_copy = images.copy()
-    #         images_copy.remove(path)
-
-    images = glob.glob('./small-images/*.jpg')
-    path = random.choice(images)
+    path = random.choice(unplayed_images)
     img = Image.open(path) 
     image_size = img.size
     string_png = convertImagetoString(img)
+    title=path[15:-4]
+    titles.append(title)
 
-    return jsonify(image_size=image_size, png_data=string_png, title=path[15:-4])
+    return jsonify(image_size=image_size, png_data=string_png, title=title, titles=titles)
 
 @app.route('/options/<n_clusters>')
 def cluster_colors(n_clusters):
