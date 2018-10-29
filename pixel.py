@@ -98,7 +98,13 @@ def choose_color(choice):
         if key == choice:
             chosen_place = idx
 
-    return jsonify(png_data=string_png, chosen_place=chosen_place+1, choices=choices)
+    labels_count = Counter(numpy_labels).most_common()
+    chosen_ranking = None
+    for idx, (key, count) in enumerate(labels_count):
+        if key == choice:
+            chosen_ranking = idx
+
+    return jsonify(png_data=string_png, chosen_place=chosen_place+1, choices=choices, chosen_ranking=chosen_ranking+1)
 
 def convertImagetoString(image):
     byte_io = BytesIO()
