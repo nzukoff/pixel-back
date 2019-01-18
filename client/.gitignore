@@ -9,8 +9,6 @@
 # production
 # /build
 
-manifest.json
-
 # misc
 .DS_Store
 .env.local
