@@ -4,16 +4,20 @@ from sklearn.cluster import MiniBatchKMeans
 from collections import Counter
 import numpy as np
 import random
-from flask import Flask, session, jsonify, request
+from flask import Flask, session, jsonify, request, render_template
 from flask_cors import CORS
 import glob
 import base64
 import zlib
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="client/build/static", template_folder="client/build")
 CORS(app)
 
-@app.route('/load/<load_type>', methods=['POST'])
+@app.route("/")
+def home():
+    return render_template('index.html')
+
+@app.route('/api/load/<load_type>', methods=['POST'])
 def load_image(load_type):
     titles = request.get_json()['titles']
     title_paths = np.array(['./small-images/' + t + '.jpg' for t in titles])
@@ -34,7 +38,7 @@ def load_image(load_type):
 
     return jsonify(image_size=image_size, png_data=string_png, title=title, titles=titles)
 
-@app.route('/options/<n_clusters>')
+@app.route('/api/options/<n_clusters>')
 def cluster_colors(n_clusters):
     path = './small-images/' + request.args['title'] + '.jpg'
     img = Image.open(path) 
@@ -58,7 +62,7 @@ def cluster_colors(n_clusters):
 
     return jsonify(color_options=color_options, labels=str_labels)
 
-@app.route('/choose/<choice>', methods=['POST'])
+@app.route('/api/choose/<choice>', methods=['POST'])
 def choose_color(choice):
     choice = int(choice)
 

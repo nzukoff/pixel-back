@@ -1,0 +1,10 @@
+.instructions {
+    color:rgb(108,117,125);
+    margin-top: 10px;
+}
+
+.my-sidebar {
+    -ms-flex: 0 0 230px;
+    flex: 0 0 230px;
+    background-color: greenyellow; 
+} 

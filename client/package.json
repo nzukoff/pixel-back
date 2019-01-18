@@ -1,0 +1,28 @@
+{
+  "name": "pixo-front",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "axios": "^0.18.0",
+    "react-redux": "^5.0.7",
+    "react-scripts": "1.1.4",
+    "redux": "^4.0.0"
+  },
+  "dependencies": {
+    "mixpanel-browser": "^2.23.0",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "redux-mixpanel-middleware": "^1.0.1",
+    "redux-thunk": "^2.3.0",
+    "serve": "^10.0.2"
+  },
+  "scripts": {
+    "dev": "react-scripts start",
+    "start": "serve -s build",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "npm run build"
+  },
+  "proxy": "http://localhost:5000/"
+}

@@ -1,0 +1,16 @@
+.ScoreBar {
+    position: relative;
+    height: 30px;
+    width: 350px;
+    border-radius: 50px;
+    border: 1px solid rgb(108,117,125);
+}
+
+/* .VerticalStripes {
+    background: repeating-linear-gradient( 
+    90deg,
+    #ccffe1,
+    #ccffe1 20%,
+    #4dff97 20%,
+    #4dff97 40%);
+} */
