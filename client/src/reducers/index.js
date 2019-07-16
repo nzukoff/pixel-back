@@ -1,7 +1,7 @@
 const initialState = {
     color_options: [],
     image_size: [], 
-    button_styles: [],
+    button_colored: [],
     score: 0, 
     percentage: 0,
     chosen_place: 0,
@@ -25,6 +25,7 @@ const initialState = {
           og_png_data: action.png_data,
           titles: action.titles,
           button_styles: [],
+          button_colored: [],
           score: 0,
           percentage: 0,
           chosen_place: 0, 
@@ -41,7 +42,8 @@ const initialState = {
           ...state,
           color_options: action.color_options, 
           labels: action.labels,
-          title: action.title
+          title: action.title,
+          button_colored: action.color_options.map(option => true)
         })
 
       case 'SET_BUTTON_STYLES':
@@ -65,10 +67,17 @@ const initialState = {
         })
 
       case 'SNEAK_A_PEAK':
-      return({
-        ...state,
-        sneak_peaks: action.sneakPeaks
-      })
+        return({
+          ...state,
+          sneak_peaks: action.sneakPeaks
+        })
+
+      case 'UNSET_CLICK':
+        return({
+          ...state,
+          button_colored: action.button_colored
+        })
+
 
       default:
         return (state)

@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.19.0",
     "react-redux": "^5.0.7",
-    "react-scripts": "1.1.4",
+    "react-scripts": "^3.0.1",
     "redux": "^4.0.0"
   },
   "dependencies": {
@@ -14,7 +14,7 @@
     "react-dom": "^16.4.2",
     "redux-mixpanel-middleware": "^1.0.1",
     "redux-thunk": "^2.3.0",
-    "serve": "^10.0.2"
+    "serve": "^11.1.0"
   },
   "scripts": {
     "dev": "react-scripts start",
@@ -24,5 +24,17 @@
     "eject": "react-scripts eject",
     "heroku-postbuild": "npm run build"
   },
-  "proxy": "http://localhost:5000/"
+  "proxy": "http://localhost:5000/",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

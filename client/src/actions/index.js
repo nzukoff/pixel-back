@@ -153,3 +153,10 @@ export const sneakAPeak = (sneakPeaks) => {
         sneakPeaks
     }
 }
+
+export const unsetClick = (button_colored, choice) => {
+    return {
+        type: 'UNSET_CLICK',
+        button_colored: button_colored.map((colored, i ) => {return i === choice || colored === false ? false : true})
+    }
+}
