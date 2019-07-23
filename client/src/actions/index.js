@@ -48,41 +48,38 @@ export const getColorOptionsSuccess = (color_options, labels, title) => ({
 })
 
 export const setButtonStyles = (choice, image_size, color_options, chosen_place) => {
-    let button_dim = (image_size[0]/5)/2-2
+    let button_dim = (image_size[0]/5)-2
     let choice_color
     let button_styles = color_options.map((color, index) => {
         if (index === choice) {
             if (chosen_place === 1){
                 choice_color = {
                     backgroundColor: `rgb(${color})`, 
-                    padding: `${button_dim}px ${button_dim}px`,
+                    width: `${button_dim}px`,
+                    height: `${button_dim}px`,
                     border: '1px solid rgb(0,200,83)',
                     borderRadius: '10px',
-                    margin: '1px',
-                    display: 'inline',
-                    float:'left'
+                    margin: '1px'
                 } 
             } else {
                 choice_color = {
                     backgroundColor: `rgb(${color})`, 
-                    padding: `${button_dim}px ${button_dim}px`,
+                    width: `${button_dim}px`,
+                    height: `${button_dim}px`,
                     border: '1px solid rgb(205,208,210)',
                     borderRadius: '10px',
-                    margin: '1px',
-                    display: 'inline',
-                    float:'left'
+                    margin: '1px'
                 }
             }            
             color = [236, 249, 249]
         }
         return {
             backgroundColor: `rgb(${color})`, 
-            padding: `${button_dim}px ${button_dim}px`,
+            width: `${button_dim}px`,
+            height: `${button_dim}px`,
             border: '1px solid rgb(205,208,210)',
             borderRadius: '10px',
-            margin: '1px',
-            display: 'inline',
-            float:'left'
+            margin: '1px'
         }
     })
     color_options[choice] = [236, 249, 249]

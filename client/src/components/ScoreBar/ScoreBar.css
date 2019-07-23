@@ -1,7 +1,6 @@
 .ScoreBar {
     position: relative;
     height: 30px;
-    width: 350px;
     border-radius: 50px;
     border: 1px solid rgb(108,117,125);
 }

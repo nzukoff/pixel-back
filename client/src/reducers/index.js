@@ -6,7 +6,6 @@ const initialState = {
     percentage: 0,
     chosen_place: 0,
     button_styles: [],
-    percentage: 0, 
     choices: [],
     titles: [],
     choice_color: {},

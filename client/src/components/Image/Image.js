@@ -4,10 +4,6 @@ import { connect } from 'react-redux'
 import './Image.css' 
 
 class Image extends Component {
-    constructor(props) {
-        super(props)
-    }
-    
     componentDidUpdate() {
         this.createImage()
     }
@@ -19,7 +15,7 @@ class Image extends Component {
     render() {
         return (
             <div className="Image">
-                <img id="image" src=""></img>
+                <img alt="colorful picture" id="image" src=""></img>
             </div>
         );
     }

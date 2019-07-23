@@ -1,0 +1,9 @@
+.ButtonWrapper {
+  width: 345px;
+  margin: auto;
+}
+
+.button {
+  display: inline-block; 
+  margin-top: -7px;
+}

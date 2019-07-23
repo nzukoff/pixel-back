@@ -82,7 +82,6 @@ def choose_color(choice):
 
     choices = request.get_json()['choices']
     choices.append(choice)
-
     data = np.array([[255, 255, 255] for d in range(len(pix_values))])
     indices = []
     for c in choices:

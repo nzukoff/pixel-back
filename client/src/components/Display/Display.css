@@ -3,14 +3,99 @@
 }
 
 button {
+    margin-bottom: 15px;
+}
+
+.options {
+    display: block;
+}
+
+.scorebar {
     margin-bottom: 30px;
 }
 
+.guess {
+    float: left;
+}
+
 .score {
-    /* color:rgb(52,58,64); */
+    font-weight: 200;
     color:rgb(108,117,125);
-    /* margin-left: 90px;
-    margin-top: 5px; */
+}
+
+.highscore {
+    font-weight: 200;
+    color:rgb(108,117,125);
+}
+
+.difficulty {
+    font-size: 23px;
+}
+
+.difficulties {
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
+.common {
+    font-size: 23px;
+    color:rgb(108,117,125);
+    font-weight: 300;
+    padding-left: 76px;
+}
+
+
+@media (max-width: 575.98px) {
+    .choice {
+        font-size: 6vw;
+    }
+    .score {
+        font-size: 6vw;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .choice {
+        font-size: 8vw;
+    }
+    .score {
+        font-size: 5vw;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .choice {
+        font-size: 6vw;
+    }
+    .score {
+        font-size: 5vw;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .choice {
+        font-size: 3vw;
+    }
+    .score {
+        font-size: 3vw;
+    }
+}
+
+@media (min-width: 1200px) {
+    .choice {
+        font-size: 3vw;
+    }
+    .score {
+        font-size: 3vw;
+    }
+}
+
+.correct {
+    color:#00c853;
+}
+
+.wrong {
+    color:#FF3100;
 }
 
 .win {

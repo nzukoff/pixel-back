@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Image from './components/Image/Image'
-import Button from './components/Button/Button'
+import ButtonWrapper from './components/ButtonWrapper/ButtonWrapper'
 import Display from './components/Display/Display'
 import Peek from './components/Peek/Peek'
 
@@ -10,10 +10,6 @@ import { doInitialFetch } from './actions/index'
 import './Game.css'
 
 class Game extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     componentDidMount() {
         this.props.doInitialFetch('new', 10, this.props.titles)
     }
@@ -21,20 +17,18 @@ class Game extends Component {
     render() {        
         return (
             <div className="Game">
-                <div className="row">
-                    <div className="col">
-                        <Peek />
-                    </div>
-                        <div className="col-auto">
-                        <Image />
-                        {
-                            this.props.button_styles.map((button_style, i) => {
-                                return <Button key={i} place={i} buttonStyle={button_style}/>
-                            })
-                        }
-                    </div>
-                    <div className="col">
-                        <Display />
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12 col-lg-3">
+                            <Peek />
+                        </div>
+                        <div className="col container text-center center-col" >
+                            <Image />
+                            <ButtonWrapper/>
+                        </div>
+                        <div className="col">
+                            <Display />
+                        </div>
                     </div>
                 </div>
             </div>

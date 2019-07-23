@@ -12,6 +12,7 @@
     "mixpanel-browser": "^2.23.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
+    "react-icons": "^3.7.0",
     "redux-mixpanel-middleware": "^1.0.1",
     "redux-thunk": "^2.3.0",
     "serve": "^11.1.0"

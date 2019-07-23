@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { FaRegSmile, FaRegTired, FaRegSurprise, FaRegFlushed, FaRegGrinStars } from 'react-icons/fa';
 
 import ScoreBar from '../ScoreBar/ScoreBar'
 import './Display.css'
@@ -53,44 +54,46 @@ class Display extends Component {
             <div className="Display">
                 <div className="score_board">
                     <div className="container">
-                        <div className="row">                            
-                            <div className="col">
-                                <button type="button" className="btn btn-secondary btn-block" onClick={() => {this.props.doInitialFetch('next', 5, this.props.titles)}}>Easy</button>
+                        <div className="row difficulties">                            
+                            <div className="col-3">
+                                <div className="btn btn-outline-secondary difficulty" onClick={() => {this.props.doInitialFetch('next', 5, this.props.titles)}}><FaRegGrinStars className='options'/></div>
                             </div>
-                            <div className="col">
-                                <button type="button" className="btn btn-secondary btn-block" onClick={() => {this.props.doInitialFetch('next', 10, this.props.titles)}}>Medium</button>
+                            <div className="col-3">
+                                <div className="btn btn-outline-secondary difficulty" onClick={() => {this.props.doInitialFetch('next', 10, this.props.titles)}}><FaRegSurprise className='options'/></div>
                             </div>
-                            <div className="col">
-                                <button type="button" className="btn btn-secondary btn-block" onClick={() => {this.props.doInitialFetch('next', 15, this.props.titles)}}>Hard</button>
+                            <div className="col-3">
+
+                                <div className="btn btn-outline-secondary difficulty" onClick={() => {this.props.doInitialFetch('next', 15, this.props.titles)}}><FaRegFlushed className='options'/></div>
                             </div>                       
                         </div>
                         <div className="row">
-                            <div className="col">
-                                <h2 className="score display-4">{`Score: ${this.props.score}`}</h2>
-                                { this.props.titles.length > 1 ? <h4 className="score">{`Your high score is: ${this.state.highScore}`}</h4> : <div></div> }
-                                <ScoreBar />
+                            <div class="col-5 col-lg-8">
+                                <div className="score">{`Score: ${this.props.score}`}</div>
+                            </div>
+                            <div class="col-7 col-lg-4 ">
+                                <div className="choice float-right">{this.props.chosenRanking ? this.props.chosenPlace === 1 ? <FaRegSmile className="correct"/> : <FaRegTired className="wrong"/>  : ''}</div>
                             </div>
                         </div>
-                        <br />
                         <div className="row">
                             <div className="col">
-                                <div style={this.props.choiceColor} ></div>
+                              <div className="scorebar">
+                                { this.props.titles.length > 1 ? <div className="highscore">{`Your high score is: ${this.state.highScore}`}</div> : <div></div> }
+                                <ScoreBar />
+                              </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col">
+                                <div className="guess" style={this.props.choiceColor} ></div>
                                 {
-                                    this.props.chosenRanking ? <div><h3 className="score">{`was the ${this.props.chosenRanking}${end} most`}</h3><h3 className="score">{`common`}</h3></div> : <div></div>
+                                    this.props.chosenRanking ? <div><div className="common">{`was the ${this.props.chosenRanking}${end} most`}</div><div className="common">{`common`}</div></div> : <div></div>
                                 }                                
                             </div>
                         </div>  
-                        <br />
-                        <div className="row">
-                            <div className="col">
-                                { this.props.chosenPlace === 1 ? <h1 className="score display-4">Score!</h1> : <div></div> }
-                                { instructions }
-                            </div>
-                        </div>
                         <div className="row">
                             <div className="col">
                                 {
-                                    this.props.percentage === 100 ? <img className="win" src="https://media.giphy.com/media/3oz8xAFtqoOUUrsh7W/giphy.gif"></img>: <div></div>
+                                    this.props.percentage === 100 ? <img alt='you win!' className="win" src="https://media.giphy.com/media/3oz8xAFtqoOUUrsh7W/giphy.gif"></img>: <div></div>
                                 }
                             </div>
                         </div>

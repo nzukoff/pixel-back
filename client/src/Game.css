@@ -1,10 +1,12 @@
-.instructions {
+/* .instructions {
     color:rgb(108,117,125);
     margin-top: 10px;
+} */
+
+.center-col {
+    margin-bottom: 15px;
 }
 
-.my-sidebar {
-    -ms-flex: 0 0 230px;
-    flex: 0 0 230px;
-    background-color: greenyellow; 
-} 
+.Game {
+    width: 100%;
+}

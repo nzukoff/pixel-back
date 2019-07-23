@@ -6,7 +6,7 @@
 
 .sneak-peek {
     margin-top: 10px;
-    margin-left: 50px;
+    float: left;
 }
 
 .timer {
@@ -18,4 +18,5 @@
     color:rgb(108,117,125);
     margin-top: 18px;
     margin-left: 7px;
+    float: left;
 }
